@@ -36,7 +36,7 @@ import {
   withHttpTransferCacheOptions,
   withI18nSupport,
   withNoHttpTransferCache
-} from "./chunk-3SQAUUA2.js";
+} from "./chunk-2DG24BSQ.js";
 import "./chunk-TCQKJL3D.js";
 import "./chunk-BJWEDLTQ.js";
 export {

@@ -21,6 +21,8 @@
     "@angular/platform-server": "^18.2.0",
     "@angular/router": "^18.2.0",
     "@angular/ssr": "^18.2.10",
+    "@sentry/angular": "^8.35.0",
+    "@sentry/tracing": "^7.114.0",
     "@zxing/browser": "^0.1.5",
     "@zxing/library": "^0.21.3",
     "Buffer": "^0.0.0",
