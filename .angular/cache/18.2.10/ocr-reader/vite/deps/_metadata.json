@@ -1,0 +1,49 @@
+{
+  "hash": "21b3e551",
+  "configHash": "2ab82590",
+  "lockfileHash": "29cba5bd",
+  "browserHash": "a2215a4f",
+  "optimized": {
+    "@angular/core": {
+      "src": "../../../../../../node_modules/@angular/core/fesm2022/core.mjs",
+      "file": "@angular_core.js",
+      "fileHash": "1775d216",
+      "needsInterop": false
+    },
+    "@angular/platform-browser": {
+      "src": "../../../../../../node_modules/@angular/platform-browser/fesm2022/platform-browser.mjs",
+      "file": "@angular_platform-browser.js",
+      "fileHash": "eb71d8f0",
+      "needsInterop": false
+    },
+    "@angular/router": {
+      "src": "../../../../../../node_modules/@angular/router/fesm2022/router.mjs",
+      "file": "@angular_router.js",
+      "fileHash": "cc4ce5b4",
+      "needsInterop": false
+    },
+    "@zxing/library": {
+      "src": "../../../../../../node_modules/@zxing/library/esm/index.js",
+      "file": "@zxing_library.js",
+      "fileHash": "b01a48f8",
+      "needsInterop": false
+    },
+    "jimp": {
+      "src": "../../../../../../node_modules/jimp/dist/browser/index.js",
+      "file": "jimp.js",
+      "fileHash": "be38e9ac",
+      "needsInterop": false
+    }
+  },
+  "chunks": {
+    "chunk-3SQAUUA2": {
+      "file": "chunk-3SQAUUA2.js"
+    },
+    "chunk-TCQKJL3D": {
+      "file": "chunk-TCQKJL3D.js"
+    },
+    "chunk-BJWEDLTQ": {
+      "file": "chunk-BJWEDLTQ.js"
+    }
+  }
+}
