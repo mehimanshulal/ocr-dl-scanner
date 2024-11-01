@@ -10,7 +10,7 @@ import {
 } from "@zxing/library";
 import { Component } from "@angular/core";
 import { Jimp } from "jimp";
-import * as Sentry from "@sentry/angular"; // Import Sentry for error logging
+import * as Sentry from "@sentry/angular";
 
 @Component({
   selector: "app-ocr-reader-form",
@@ -34,10 +34,6 @@ export class OcrReaderFormComponent {
   ];
   reader = new MultiFormatReader();
 
-  // constructor() {
-  //   this.hints.set(DecodeHintType.POSSIBLE_FORMATS, this.formats);
-  // }
-
   constructor() {
     // Add PDF417 and QR code formats to the hints
     this.hints.set(DecodeHintType.POSSIBLE_FORMATS, this.formats);
@@ -48,15 +44,46 @@ export class OcrReaderFormComponent {
    * Handles file selection from the input.
    * Reads the selected file as a data URL and triggers image processing.
    */
+
+  // onFileSelectedJimp(event: Event) {
+  //   const file = (event.target as HTMLInputElement).files?.[0];
+  //   if (file) {
+  //     const reader = new FileReader();
+  //     reader.onload = (e) => {
+  //       const imageDataUrl = e.target?.result as string;
+  //       this.processImage(imageDataUrl);
+  //     };
+  //     reader.readAsDataURL(file);
+  //   }
+  // }
+
   onFileSelectedJimp(event: Event) {
-    const file = (event.target as HTMLInputElement).files?.[0];
-    if (file) {
-      const reader = new FileReader();
-      reader.onload = (e) => {
-        const imageDataUrl = e.target?.result as string;
-        this.processImage(imageDataUrl);
-      };
-      reader.readAsDataURL(file);
+    try {
+      const file = (event.target as HTMLInputElement).files?.[0];
+      if (file) {
+        const reader = new FileReader();
+        reader.onload = async (e) => {
+          const imageDataUrl = e.target?.result as string;
+          try {
+            await this.processImage(imageDataUrl);
+          } catch (error) {
+            console.error("Image processing failed:", error);
+            this.ocrResult = `Image processing failed: ${
+              error instanceof Error
+                ? error.message
+                : "Unknown error Image processing failed"
+            }`;
+          }
+        };
+        reader.readAsDataURL(file);
+      }
+    } catch (error) {
+      console.error("File selection failed:", error);
+      this.ocrResult = `File selection failed: ${
+        error instanceof Error
+          ? error.message
+          : "Unknown error File selection failed:"
+      }`;
     }
   }
 
@@ -102,6 +129,7 @@ export class OcrReaderFormComponent {
       this.loading = false;
     }
   }
+
   // async processImage(imageDataUrl: string) {
   //   this.loading = true;
   //   try {

@@ -1,64 +1,70 @@
 {
-  "hash": "c2a6e05a",
-  "configHash": "fa13aa4a",
-  "lockfileHash": "b3bddfe4",
-  "browserHash": "ef446624",
+  "hash": "b60016d0",
+  "configHash": "b7ecef57",
+  "lockfileHash": "fd45a9e8",
+  "browserHash": "be728544",
   "optimized": {
     "@angular/core": {
       "src": "../../../../../../node_modules/@angular/core/fesm2022/core.mjs",
       "file": "@angular_core.js",
-      "fileHash": "749a93bf",
+      "fileHash": "4a699acb",
       "needsInterop": false
     },
     "@angular/platform-browser": {
       "src": "../../../../../../node_modules/@angular/platform-browser/fesm2022/platform-browser.mjs",
       "file": "@angular_platform-browser.js",
-      "fileHash": "1183a111",
+      "fileHash": "6684f336",
       "needsInterop": false
     },
     "@angular/platform-server": {
       "src": "../../../../../../node_modules/@angular/platform-server/fesm2022/platform-server.mjs",
       "file": "@angular_platform-server.js",
-      "fileHash": "7627efc0",
+      "fileHash": "76477193",
       "needsInterop": false
     },
     "@angular/router": {
       "src": "../../../../../../node_modules/@angular/router/fesm2022/router.mjs",
       "file": "@angular_router.js",
-      "fileHash": "a371462b",
+      "fileHash": "f3d896ff",
       "needsInterop": false
     },
     "@sentry/angular": {
       "src": "../../../../../../node_modules/@sentry/angular/fesm2015/sentry-angular.mjs",
       "file": "@sentry_angular.js",
-      "fileHash": "12729c73",
+      "fileHash": "55e4dd2c",
       "needsInterop": false
     },
     "@zxing/library": {
       "src": "../../../../../../node_modules/@zxing/library/esm/index.js",
       "file": "@zxing_library.js",
-      "fileHash": "9bb4ae18",
+      "fileHash": "4cade7db",
       "needsInterop": false
     },
     "jimp": {
       "src": "../../../../../../node_modules/jimp/dist/esm/index.js",
       "file": "jimp.js",
-      "fileHash": "0a4f1b2e",
+      "fileHash": "5e80337d",
+      "needsInterop": false
+    },
+    "ngx-image-cropper": {
+      "src": "../../../../../../node_modules/ngx-image-cropper/fesm2022/ngx-image-cropper.mjs",
+      "file": "ngx-image-cropper.js",
+      "fileHash": "7e0d492c",
       "needsInterop": false
     }
   },
   "chunks": {
-    "chunk-6YT5VCL4": {
-      "file": "chunk-6YT5VCL4.js"
+    "xhr2-GDFZDFMI": {
+      "file": "xhr2-GDFZDFMI.js"
     },
-    "chunk-YVLD4NKW": {
-      "file": "chunk-YVLD4NKW.js"
+    "chunk-ISMFM46U": {
+      "file": "chunk-ISMFM46U.js"
+    },
+    "chunk-PORJ3TYI": {
+      "file": "chunk-PORJ3TYI.js"
     },
     "chunk-LFJZR635": {
       "file": "chunk-LFJZR635.js"
-    },
-    "xhr2-GDFZDFMI": {
-      "file": "xhr2-GDFZDFMI.js"
     },
     "chunk-WL4XZBWR": {
       "file": "chunk-WL4XZBWR.js"

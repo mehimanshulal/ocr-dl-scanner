@@ -1,55 +1,61 @@
 {
-  "hash": "c731927c",
-  "configHash": "cb7f9de5",
-  "lockfileHash": "b3bddfe4",
-  "browserHash": "94a89810",
+  "hash": "a993d73c",
+  "configHash": "444bcb56",
+  "lockfileHash": "fd45a9e8",
+  "browserHash": "29fb8810",
   "optimized": {
     "@angular/core": {
       "src": "../../../../../../node_modules/@angular/core/fesm2022/core.mjs",
       "file": "@angular_core.js",
-      "fileHash": "079b45dd",
+      "fileHash": "37519238",
       "needsInterop": false
     },
     "@angular/platform-browser": {
       "src": "../../../../../../node_modules/@angular/platform-browser/fesm2022/platform-browser.mjs",
       "file": "@angular_platform-browser.js",
-      "fileHash": "98022404",
+      "fileHash": "609f4b32",
       "needsInterop": false
     },
     "@angular/router": {
       "src": "../../../../../../node_modules/@angular/router/fesm2022/router.mjs",
       "file": "@angular_router.js",
-      "fileHash": "c0923c40",
-      "needsInterop": false
-    },
-    "@zxing/library": {
-      "src": "../../../../../../node_modules/@zxing/library/esm/index.js",
-      "file": "@zxing_library.js",
-      "fileHash": "27eab540",
-      "needsInterop": false
-    },
-    "jimp": {
-      "src": "../../../../../../node_modules/jimp/dist/browser/index.js",
-      "file": "jimp.js",
-      "fileHash": "c5197900",
+      "fileHash": "84e51e1a",
       "needsInterop": false
     },
     "@sentry/angular": {
       "src": "../../../../../../node_modules/@sentry/angular/fesm2020/sentry-angular.mjs",
       "file": "@sentry_angular.js",
-      "fileHash": "054b59e8",
+      "fileHash": "9cd7c5bc",
+      "needsInterop": false
+    },
+    "@zxing/library": {
+      "src": "../../../../../../node_modules/@zxing/library/esm/index.js",
+      "file": "@zxing_library.js",
+      "fileHash": "d19accf4",
+      "needsInterop": false
+    },
+    "jimp": {
+      "src": "../../../../../../node_modules/jimp/dist/browser/index.js",
+      "file": "jimp.js",
+      "fileHash": "226067b9",
+      "needsInterop": false
+    },
+    "ngx-image-cropper": {
+      "src": "../../../../../../node_modules/ngx-image-cropper/fesm2022/ngx-image-cropper.mjs",
+      "file": "ngx-image-cropper.js",
+      "fileHash": "25d46ac3",
       "needsInterop": false
     }
   },
   "chunks": {
-    "chunk-W7B2QAER": {
-      "file": "chunk-W7B2QAER.js"
+    "chunk-LCF2DSZ5": {
+      "file": "chunk-LCF2DSZ5.js"
     },
-    "chunk-2DG24BSQ": {
-      "file": "chunk-2DG24BSQ.js"
+    "chunk-HATUIYFX": {
+      "file": "chunk-HATUIYFX.js"
     },
-    "chunk-TCQKJL3D": {
-      "file": "chunk-TCQKJL3D.js"
+    "chunk-ER2UJ62S": {
+      "file": "chunk-ER2UJ62S.js"
     },
     "chunk-BJWEDLTQ": {
       "file": "chunk-BJWEDLTQ.js"
