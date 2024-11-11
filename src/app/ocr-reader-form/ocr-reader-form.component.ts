@@ -55,6 +55,10 @@ export class OcrReaderFormComponent {
     ]);
     this.BrowserReader = new BrowserMultiFormatReader(this.hints);
     LogRocket.init("oik1hm/angular_ocr_reader");
+    LogRocket.identify("meHimanshu123", {
+      name: "Himanshu Lal",
+      email: "himanshulal9994@gmail.com",
+    });
   }
 
   ngOnInit() {
