@@ -1,6 +1,42 @@
+<!-- OCR Form Container -->
 <div class="ocr-form-container">
   <h2>OCR Reader</h2>
 
-  <input type="file" (change)="onFileSelectedJimp($event)" accept="image/*" />
-  <p>{{ ocrResult }}</p>
+  <!-- File upload -->
+  <div class="file-upload">
+    <input type="file" (change)="onFileSelectedJimp($event)" accept="image/*" />
+  </div>
+
+  <!-- Progress Bar -->
+  <div *ngIf="isProcessing" class="progress-bar">
+    <div class="progress" [style.width.%]="progress"></div>
+  </div>
+
+  <!-- Display OCR Result -->
+  <div *ngIf="ocrResult" class="ocr-result">{{ ocrResult }}</div>
+
+  <!-- Toggle Webcam -->
+  <button *ngIf="isMobile" (click)="toggleWebcam()" class="toggle-webcam-btn">
+    {{ showWebcam ? "Close Camera" : "Use Camera" }}
+  </button>
+
+  <!-- Webcam display and capture button -->
+  <div *ngIf="showWebcam" class="webcam-container">
+    <webcam
+      [trigger]="triggerObservable"
+      (imageCapture)="handleImage($event)"
+      (initError)="handleInitError($event)"
+    ></webcam>
+    <button (click)="triggerSnapshot()" class="capture-btn">
+      Capture Photo
+    </button>
+  </div>
+
+  <!-- Display captured image for review -->
+  <img
+    *ngIf="webcamImage"
+    [src]="webcamImage?.imageAsDataUrl"
+    alt="Captured Image"
+    class="captured-image"
+  />
 </div>

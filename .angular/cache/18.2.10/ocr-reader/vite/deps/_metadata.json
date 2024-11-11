@@ -1,64 +1,88 @@
 {
-  "hash": "a993d73c",
-  "configHash": "444bcb56",
-  "lockfileHash": "fd45a9e8",
-  "browserHash": "29fb8810",
+  "hash": "0007ce43",
+  "configHash": "3734db56",
+  "lockfileHash": "99866728",
+  "browserHash": "40d9e8ba",
   "optimized": {
+    "@angular/common": {
+      "src": "../../../../../../node_modules/@angular/common/fesm2022/common.mjs",
+      "file": "@angular_common.js",
+      "fileHash": "a9b8a148",
+      "needsInterop": false
+    },
     "@angular/core": {
       "src": "../../../../../../node_modules/@angular/core/fesm2022/core.mjs",
       "file": "@angular_core.js",
-      "fileHash": "37519238",
+      "fileHash": "8c15536c",
       "needsInterop": false
     },
     "@angular/platform-browser": {
       "src": "../../../../../../node_modules/@angular/platform-browser/fesm2022/platform-browser.mjs",
       "file": "@angular_platform-browser.js",
-      "fileHash": "609f4b32",
+      "fileHash": "f05f139b",
       "needsInterop": false
     },
     "@angular/router": {
       "src": "../../../../../../node_modules/@angular/router/fesm2022/router.mjs",
       "file": "@angular_router.js",
-      "fileHash": "84e51e1a",
+      "fileHash": "46c8c926",
       "needsInterop": false
     },
     "@sentry/angular": {
       "src": "../../../../../../node_modules/@sentry/angular/fesm2020/sentry-angular.mjs",
       "file": "@sentry_angular.js",
-      "fileHash": "9cd7c5bc",
+      "fileHash": "d5f8227d",
       "needsInterop": false
     },
     "@zxing/library": {
       "src": "../../../../../../node_modules/@zxing/library/esm/index.js",
       "file": "@zxing_library.js",
-      "fileHash": "d19accf4",
+      "fileHash": "5f4bdd95",
       "needsInterop": false
     },
     "jimp": {
       "src": "../../../../../../node_modules/jimp/dist/browser/index.js",
       "file": "jimp.js",
-      "fileHash": "226067b9",
+      "fileHash": "af07c15f",
       "needsInterop": false
     },
-    "ngx-image-cropper": {
-      "src": "../../../../../../node_modules/ngx-image-cropper/fesm2022/ngx-image-cropper.mjs",
-      "file": "ngx-image-cropper.js",
-      "fileHash": "25d46ac3",
+    "logrocket": {
+      "src": "../../../../../../node_modules/logrocket/dist/build.umd.js",
+      "file": "logrocket.js",
+      "fileHash": "8c482de1",
+      "needsInterop": true
+    },
+    "ngx-webcam": {
+      "src": "../../../../../../node_modules/ngx-webcam/fesm2020/ngx-webcam.mjs",
+      "file": "ngx-webcam.js",
+      "fileHash": "1ce07c26",
+      "needsInterop": false
+    },
+    "rxjs": {
+      "src": "../../../../../../node_modules/rxjs/dist/esm5/index.js",
+      "file": "rxjs.js",
+      "fileHash": "73e11b87",
       "needsInterop": false
     }
   },
   "chunks": {
-    "chunk-LCF2DSZ5": {
-      "file": "chunk-LCF2DSZ5.js"
+    "chunk-NGOHHMTA": {
+      "file": "chunk-NGOHHMTA.js"
     },
-    "chunk-HATUIYFX": {
-      "file": "chunk-HATUIYFX.js"
+    "chunk-7KZM6SJU": {
+      "file": "chunk-7KZM6SJU.js"
     },
-    "chunk-ER2UJ62S": {
-      "file": "chunk-ER2UJ62S.js"
+    "chunk-CQDXDI3K": {
+      "file": "chunk-CQDXDI3K.js"
     },
-    "chunk-BJWEDLTQ": {
-      "file": "chunk-BJWEDLTQ.js"
+    "chunk-3JYCMZQL": {
+      "file": "chunk-3JYCMZQL.js"
+    },
+    "chunk-66JPAEYR": {
+      "file": "chunk-66JPAEYR.js"
+    },
+    "chunk-UKK5MWW6": {
+      "file": "chunk-UKK5MWW6.js"
     }
   }
 }

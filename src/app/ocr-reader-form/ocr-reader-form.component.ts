@@ -1,22 +1,24 @@
 import {
   BarcodeFormat,
-  RGBLuminanceSource,
-  HybridBinarizer,
-  BinaryBitmap,
   DecodeHintType,
-  PDF417Reader,
-  MultiFormatReader,
+  BrowserMultiFormatReader,
   NotFoundException,
 } from "@zxing/library";
 import { Component } from "@angular/core";
 import { Jimp } from "jimp";
-import * as Sentry from "@sentry/angular";
+// import * as Sentry from "@sentry/angular";
+import { WebcamImage, WebcamInitError, WebcamModule } from "ngx-webcam";
+import { Subject, Observable } from "rxjs";
+import { CommonModule } from "@angular/common";
+import { PlatformDetectorService } from "../services/platform-detector.service";
+import LogRocket from "logrocket";
 
 @Component({
   selector: "app-ocr-reader-form",
   standalone: true,
   templateUrl: "./ocr-reader-form.component.html",
   styleUrls: ["./ocr-reader-form.component.css"],
+  imports: [WebcamModule, CommonModule],
 })
 export class OcrReaderFormComponent {
   selectedFile: File | null = null;
@@ -25,180 +27,143 @@ export class OcrReaderFormComponent {
   imageData: string | ArrayBuffer | null = null;
   dlData: string = "";
 
-  // Define hints for decoding, initializing with supported formats.
-  hints = new Map();
-  formats = [
-    BarcodeFormat.PDF_417,
-    BarcodeFormat.QR_CODE,
-    BarcodeFormat.DATA_MATRIX,
-  ];
-  reader = new MultiFormatReader();
+  isProcessing: boolean = false;
+  progress: number = 0;
+  webcamImage: any;
+  showWebcam: boolean = false;
+  isMobile: boolean = false;
+  trigger: Subject<void> = new Subject<void>();
+  BrowserReader: any;
+  hints: any;
 
-  constructor() {
-    // Add PDF417 and QR code formats to the hints
-    this.hints.set(DecodeHintType.POSSIBLE_FORMATS, this.formats);
-    this.reader.setHints(this.hints);
-  }
+  // hints = new Map();
 
-  /**
-   * Handles file selection from the input.
-   * Reads the selected file as a data URL and triggers image processing.
-   */
-
-  // onFileSelectedJimp(event: Event) {
-  //   const file = (event.target as HTMLInputElement).files?.[0];
-  //   if (file) {
-  //     const reader = new FileReader();
-  //     reader.onload = (e) => {
-  //       const imageDataUrl = e.target?.result as string;
-  //       this.processImage(imageDataUrl);
-  //     };
-  //     reader.readAsDataURL(file);
-  //   }
+  // constructor(private platformDetectorService: PlatformDetectorService) {
+  //   this.hints.set(DecodeHintType.POSSIBLE_FORMATS, [
+  //     BarcodeFormat.PDF_417,
+  //     BarcodeFormat.QR_CODE,
+  //   ]);
+  //   this.BrowserReader = new BrowserMultiFormatReader(this.hints);
+  //   console.log("BrowserReader updated", this.BrowserReader);
   // }
-
-  onFileSelectedJimp(event: Event) {
-    try {
-      const file = (event.target as HTMLInputElement).files?.[0];
-      if (file) {
-        const reader = new FileReader();
-        reader.onload = async (e) => {
-          const imageDataUrl = e.target?.result as string;
-          try {
-            await this.processImage(imageDataUrl);
-          } catch (error) {
-            console.error("Image processing failed:", error);
-            this.ocrResult = `Image processing failed: ${
-              error instanceof Error
-                ? error.message
-                : "Unknown error Image processing failed"
-            }`;
-          }
-        };
-        reader.readAsDataURL(file);
-      }
-    } catch (error) {
-      console.error("File selection failed:", error);
-      this.ocrResult = `File selection failed: ${
-        error instanceof Error
-          ? error.message
-          : "Unknown error File selection failed:"
-      }`;
-    }
+  constructor(private platformDetectorService: PlatformDetectorService) {
+    this.hints = new Map();
+    this.hints.set(DecodeHintType.POSSIBLE_FORMATS, [
+      BarcodeFormat.PDF_417,
+      BarcodeFormat.QR_CODE,
+      BarcodeFormat.DATA_MATRIX,
+    ]);
+    this.BrowserReader = new BrowserMultiFormatReader(this.hints);
+    LogRocket.init("oik1hm/angular_ocr_reader");
   }
 
-  /**
-   * Processes the uploaded image using Jimp, extracts luminance,
-   * decodes PDF417 barcode, and parses extracted text.
-   */
-  async processImage(imageDataUrl: string) {
-    this.loading = true;
-    try {
-      const image = await Jimp.read(imageDataUrl);
-      const width = image.bitmap.width;
-      const height = image.bitmap.height;
-      const int32Array = new Int32Array(image.bitmap.data.buffer);
-      console.log("width", width);
-      console.log("height", height);
-      console.log("int32Array", int32Array);
+  ngOnInit() {
+    this.showWebcam = this.platformDetectorService.isMobile();
+    this.isMobile = this.platformDetectorService.isMobile();
+  }
 
-      const luminanceSource = new RGBLuminanceSource(int32Array, width, height);
-      const binaryBitmap = new BinaryBitmap(
-        new HybridBinarizer(luminanceSource)
-      );
-      console.log("luminanceSource", luminanceSource);
-      console.log("binaryBitmap", binaryBitmap);
+  uploadAndProcessImage(file: File) {
+    this.isProcessing = true;
+    this.progress = 0;
 
-      let result = this.reader.decode(binaryBitmap);
-      console.log("Result ==>", result);
-      if (result) {
-        this.parseAAMVA(result.getText());
-      } else {
-        this.ocrResult = "No valid data found in the barcode.";
+    const fileReader = new FileReader();
+    fileReader.onload = async (e) => {
+      const imageDataUrl = e.target?.result as string;
+      try {
+        await this.processImage(imageDataUrl);
+      } catch (error) {
+        console.error("Image processing failed:", error);
+        this.ocrResult = `Image processing failed: ${
+          error instanceof Error ? error.message : "Unknown error"
+        }`;
+      } finally {
+        this.isProcessing = false;
+        this.progress = 100;
       }
-    } catch (error) {
-      if (error instanceof NotFoundException) {
-        this.ocrResult =
-          "No barcode found. Ensure the image has a clear QR or PDF417 code.";
-      } else {
-        Sentry.captureException(error, { tags: { section: "OCR Processing" } });
-        this.ocrResult = "Error processing the image.";
+    };
+    fileReader.onprogress = (event) => {
+      if (event.lengthComputable) {
+        this.progress = Math.round((event.loaded / event.total) * 100);
       }
-      console.error("Decoding error:", error);
-    } finally {
-      this.loading = false;
-    }
+    };
+    fileReader.readAsDataURL(file);
+  }
+
+  triggerSnapshot(): void {
+    this.trigger.next();
+  }
+
+  toggleWebcam() {
+    this.showWebcam = !this.showWebcam;
+  }
+
+  handleImage(webcamImage: WebcamImage): void {
+    this.webcamImage = webcamImage;
+    console.log("webcamImage.imageAsDataUrl =>", webcamImage.imageAsDataUrl);
+    this.processImage(webcamImage.imageAsDataUrl);
+    this.showWebcam = false;
+  }
+
+  handleInitError(error: WebcamInitError): void {
+    console.log(error);
+    this.ocrResult = `Webcam initialization error: ${error.message}`;
+  }
+
+  get triggerObservable(): Observable<void> {
+    return this.trigger.asObservable();
   }
 
   // async processImage(imageDataUrl: string) {
   //   this.loading = true;
   //   try {
-  //     // Convert imageDataUrl to binary data to assess its size
-  //     const response = await fetch(imageDataUrl);
-  //     const blob = await response.blob();
-  //     const fileSizeMB = blob.size / (1024 * 1024);
+  //     const formatMatch = imageDataUrl.match(/data:image\/(.*?);/);
+  //     const format = formatMatch ? formatMatch[1] : "png";
+  //     const image = await Jimp.read(imageDataUrl);
+  //     image.greyscale().contrast(0.5).brightness(0.1).normalize();
 
-  //     // Check if the file size exceeds 2 MB (adjust as needed)
-  //     const maxFileSizeMB = 20;
-  //     if (fileSizeMB > maxFileSizeMB) {
-  //       // Notify the user if the file is too large
-  //       this.ocrResult = `File size is too large (${fileSizeMB.toFixed(
-  //         maxFileSizeMB
-  //       )} MB). Please use a smaller image.`;
-  //       return;
-  //     }
+  //     const targetWidth = 920;
+  //     const aspectRatio = image.bitmap.height / image.bitmap.width;
+  //     const targetHeight = Math.round(targetWidth * aspectRatio);
+  //     image.resize({ w: targetWidth, h: targetHeight });
 
-  //     // Read image using Jimp and preprocess
-  //     let image: any = await Jimp.read(imageDataUrl);
+  //     const canvas = document.createElement("canvas");
+  //     canvas.width = targetWidth;
+  //     canvas.height = targetHeight;
+  //     const ctx = canvas.getContext("2d");
+  //     if (!ctx) throw new Error("Failed to get canvas context");
 
-  //     // Set target width for resizing (adjust as needed)
-  //     const targetWidth = 1000;
-  //     const aspectRatio = image.bitmap.width / image.bitmap.height;
-  //     const targetHeight = Math.round(targetWidth / aspectRatio);
+  //     const imageData = new ImageData(
+  //       new Uint8ClampedArray(image.bitmap.data),
+  //       targetWidth,
+  //       targetHeight
+  //     );
+  //     ctx.putImageData(imageData, 0, 0);
 
-  //     // Resize to a standard size if image dimensions are large, to around 1000x1000 or less
-  //     if (image.bitmap.width > 1000 || image.bitmap.height > 1000) {
-  //       image = image.resize({ w: targetWidth, h: targetHeight });
-  //     }
+  //     // const imageUrl = canvas.toDataURL();
+  //     const imageUrl = canvas.toDataURL(`image/${format}`);
 
-  //     // Enhance brightness, contrast, and convert to grayscale
-  //     image = image.brightness(0.1).contrast(0.5).greyscale();
+  //     const imgElement = document.createElement("img");
+  //     imgElement.src = imageUrl;
 
-  //     // Rotation handling and decoding
-  //     const rotations = [0, 90, 180, 270];
-  //     let result;
-  //     for (const rotation of rotations) {
-  //       if (rotation !== 0) {
-  //         image = image.rotate(rotation);
-  //       }
+  //     // const imgElement = document.createElement("img");
+  //     // imgElement.src = imageUrl;
+  //     // await new Promise((resolve) => (imgElement.onload = resolve));
+  //     // console.log("this.BrowserReader =>", this.BrowserReader.decodeFromImageElement);
 
-  //       const width = image.bitmap.width;
-  //       const height = image.bitmap.height;
-  //       const int32Array = new Int32Array(image.bitmap.data.buffer);
-  //       const luminanceSource = new RGBLuminanceSource(
-  //         int32Array,
-  //         width,
-  //         height
-  //       );
-  //       const binaryBitmap = new BinaryBitmap(
-  //         new HybridBinarizer(luminanceSource)
-  //       );
+  //     // console.log("this.BrowserReader =>", this.BrowserReader.decodeFromImage());
+  //     // const result = await this.BrowserReader.decodeFromImageElement(
+  //     //   imgElement
+  //     // );
+  //     const result = await this.BrowserReader.decodeFromImage(imgElement);
 
-  //       try {
-  //         result = this.reader.decode(binaryBitmap);
-
-  //         if (result) break;
-  //       } catch (error) {
-  //         if (!(error instanceof NotFoundException)) throw error;
-  //       }
-  //     }
-  //     console.log("result ...", result);
   //     if (result) {
-  //       this.parseAAMVA(result.getText());
+  //       this.ocrResult = result.getText();
+  //       this.parseAAMVA(this.ocrResult);
   //     } else {
   //       this.ocrResult = "No valid data found in the barcode.";
   //     }
   //   } catch (error) {
+  //     console.log("error ===>", error);
   //     if (error instanceof NotFoundException) {
   //       this.ocrResult =
   //         "No barcode found. Ensure the image has a clear QR or PDF417 code.";
@@ -212,42 +177,141 @@ export class OcrReaderFormComponent {
   //   }
   // }
 
-  /**
-   * Parses AAMVA-compliant data from the decoded text.
-   * Extracts name, date of birth, and license number using regex patterns.
-   */
+  async processImage(imageDataUrl: string) {
+    this.loading = true;
+    try {
+      // Step 1: Image Quality Check
+      const image = await Jimp.read(imageDataUrl);
+      if (!this.isImageQualitySufficient(image)) {
+        this.ocrResult =
+          "Image quality is too low for reliable decoding. Please provide a clearer image.";
+        return;
+      }
+
+      // Proceed with existing processing and decoding
+      const formatMatch = imageDataUrl.match(/data:image\/(.*?);/);
+      const format = formatMatch ? formatMatch[1] : "png";
+
+      // Apply preprocessing transformations
+      image.greyscale().contrast(0.5).brightness(0.1).normalize();
+
+      // Resize image while maintaining aspect ratio
+      const targetWidth = 2048;
+      const aspectRatio = image.bitmap.height / image.bitmap.width;
+      const targetHeight = Math.round(targetWidth * aspectRatio);
+      image.resize({ w: targetWidth, h: targetHeight });
+
+      // Check Image Dimensions
+      // const minDimension = 100; // Minimum acceptable dimension
+      // const maxDimension = targetWidth; // Maximum acceptable dimension
+      // if (
+      //   image.bitmap.width < minDimension ||
+      //   image.bitmap.height < minDimension ||
+      //   image.bitmap.width > maxDimension ||
+      //   image.bitmap.height > maxDimension
+      // ) {
+      //   this.ocrResult = `Image dimensions (${image.bitmap.width}x${image.bitmap.height}) are outside acceptable limits.`;
+      //   return;
+      // }
+
+      // Convert processed image to canvas data
+      const canvas = document.createElement("canvas");
+      canvas.width = targetWidth;
+      canvas.height = targetHeight;
+      const ctx = canvas.getContext("2d");
+      if (!ctx) throw new Error("Failed to get canvas context");
+
+      const imageData = new ImageData(
+        new Uint8ClampedArray(image.bitmap.data),
+        targetWidth,
+        targetHeight
+      );
+      ctx.putImageData(imageData, 0, 0);
+
+      const imageUrl = canvas.toDataURL(`image/${format}`);
+      const imgElement = document.createElement("img");
+      imgElement.src = imageUrl;
+
+      // Decode the Image with BrowserMultiFormatReader
+      const result = await this.BrowserReader.decodeFromImage(imgElement);
+
+      if (result) {
+        this.ocrResult = result.getText();
+        this.parseAAMVA(this.ocrResult);
+      } else {
+        this.ocrResult = "No valid data found in the barcode.";
+      }
+    } catch (error) {
+      if (error instanceof NotFoundException) {
+        LogRocket.error("An error occurred,No barcode found.", {
+          additionalData: error,
+        });
+        this.ocrResult =
+          "No barcode found. Ensure the image has a clear QR or PDF417 code.";
+      } else {
+        LogRocket.error("Error processing the image", {
+          additionalData: error,
+        });
+        this.ocrResult = "Error processing the image.";
+      }
+      console.error("Decoding error:", error);
+    } finally {
+      this.loading = false;
+    }
+  }
+
+  // Helper function to check if image quality is sufficient
+  isImageQualitySufficient(image: any): boolean {
+    const contrast =
+      image.bitmap.data.reduce((acc: any, pixel: any, index: any) => {
+        if (index % 4 === 0) {
+          acc += Math.abs(pixel - 128);
+        }
+        return acc;
+      }, 0) /
+      (image.bitmap.width * image.bitmap.height);
+
+    const sharpnessThreshold = 0.3; // Define your sharpness threshold here
+    return contrast > sharpnessThreshold;
+  }
+
+  onFileSelectedJimp(event: Event) {
+    try {
+      const file = (event.target as HTMLInputElement).files?.[0];
+      if (file) {
+        this.uploadAndProcessImage(file);
+      }
+    } catch (error) {
+      this.ocrResult = `File selection failed: ${
+        error instanceof Error ? error.message : "Unknown error"
+      }`;
+    }
+  }
+
   private parseAAMVA(data: string): void {
-    console.log("extracted data => ", data);
+    const regexNameAAMVA = /DAC([^\n]*)/;
+    const regexDOBAAMVA = /DBB(\d{8})/;
+    const regexLicenseNumberAAMVA = /DAQ([^\n]*)/;
 
-    // Initial Regular expressions for the original AAMVA format
-    const regexNameAAMVA = /DAC([^\n]*)/; // AAMVA Name
-    const regexDOBAAMVA = /DBB(\d{8})/; // AAMVA Date of birth
-    const regexLicenseNumberAAMVA = /DAQ([^\n]*)/; // AAMVA License number
+    const regexNameLabel = /Name\s*[:\-\s,]*\s*([^\n]*)/i;
+    const regexDOBLabel = /DOB\s*[:\-\s,]*\s*(\d{8})/i;
+    const regexLicenseNumberLabel = /License\s*Number\s*[:\-\s,]*\s*([^\n]*)/i;
 
-    // Fallback Regular expressions for label-based format with flexible separators
-    const regexNameLabel = /Name\s*[:\-\s,]*\s*([^\n]*)/i; // Flexible Name label
-    const regexDOBLabel = /DOB\s*[:\-\s,]*\s*(\d{8})/i; // Flexible DOB label
-    const regexLicenseNumberLabel = /License\s*Number\s*[:\-\s,]*\s*([^\n]*)/i; // Flexible License number label
-
-    // Attempt to match AAMVA format first
     let nameMatch = data.match(regexNameAAMVA);
     let dobMatch = data.match(regexDOBAAMVA);
     let licenseNumberMatch = data.match(regexLicenseNumberAAMVA);
 
-    // Fallback to label-based format if AAMVA format isn't matched
     if (!nameMatch) nameMatch = data.match(regexNameLabel);
     if (!dobMatch) dobMatch = data.match(regexDOBLabel);
     if (!licenseNumberMatch)
       licenseNumberMatch = data.match(regexLicenseNumberLabel);
 
-    // Extract and format results
     const name = nameMatch ? nameMatch[1].trim() : "Not found";
     const dob = dobMatch ? dobMatch[1] : "Not found";
     const licenseNumber = licenseNumberMatch
       ? licenseNumberMatch[1].trim()
       : "Not found";
 
-    // Append results to ocrResult
     this.ocrResult = `Name: ${name}, \n DOB: ${dob}, \n License Number: ${licenseNumber}`;
   }
 }
