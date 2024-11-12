@@ -1,42 +1,149 @@
 <!-- OCR Form Container -->
 <div class="ocr-form-container">
-  <h2>OCR Reader</h2>
+  <h2 class="title">OCR Reader</h2>
 
-  <!-- File upload -->
+  <!-- File Upload Section -->
   <div class="file-upload">
-    <input type="file" (change)="onFileSelectedJimp($event)" accept="image/*" />
-  </div>
-
-  <!-- Progress Bar -->
-  <div *ngIf="isProcessing" class="progress-bar">
-    <div class="progress" [style.width.%]="progress"></div>
+    <p>Select Your Image Here</p>
+    <div
+      style="
+        display: flex;
+        flex-flow: row;
+        justify-content: center;
+        align-content: space-evenly;
+      "
+    >
+      <label class="custom-file-upload">
+        <input
+          type="file"
+          (change)="onFileSelectedJimp($event)"
+          accept="image/*"
+        />
+        Choose File
+      </label>
+      <button
+        class="crop-button"
+        style="margin: 0px 10px; background-color: #931c1c"
+        (click)="handleFormReset()"
+      >
+        Reset
+      </button>
+    </div>
   </div>
 
   <!-- Display OCR Result -->
-  <div *ngIf="ocrResult" class="ocr-result">{{ ocrResult }}</div>
+  <div *ngIf="ocrResult" class="ocr-result">
+    <p>OCR Result:</p>
+    <p>{{ ocrResult }}</p>
+  </div>
 
-  <!-- Toggle Webcam -->
+  <!-- Progress Bar -->
+  <div *ngIf="isProcessing" class="progress-bar-container">
+    <div class="progress-bar">
+      <div class="progress" [style.width.%]="progress"></div>
+    </div>
+  </div>
+
+  <!-- Image Cropper Section -->
+  <div *ngIf="isImageOpenedInCropper" class="image-cropper-container">
+    <image-cropper
+      [imageChangedEvent]="imageChangedEvent"
+      [imageBase64]="capturedImageDataUrl"
+      [maintainAspectRatio]="false"
+      [aspectRatio]="16 / 9"
+      format="png"
+      (imageCropped)="imageCropped($event)"
+      (imageLoaded)="imageLoaded($event)"
+      (cropperReady)="cropperReady()"
+      (loadImageFailed)="loadImageFailed()"
+    ></image-cropper>
+    <button (click)="cropImage()" class="crop-button">
+      Apply Crop and Process
+    </button>
+  </div>
+
+  <!-- Display Cropped Image -->
+  <div *ngIf="croppedImage" class="cropped-image-container">
+    <h3>Cropped Image:</h3>
+    <img [src]="croppedImage" alt="Cropped Image" class="cropped-image" />
+  </div>
+
+  <!-- Webcam Toggle and Capture Section -->
+  <p class="instruction" *ngIf="isMobile">
+    To capture an image from the camera, use the button below:
+  </p>
   <button *ngIf="isMobile" (click)="toggleWebcam()" class="toggle-webcam-btn">
     {{ showWebcam ? "Close Camera" : "Use Camera" }}
   </button>
 
-  <!-- Webcam display and capture button -->
   <div *ngIf="showWebcam" class="webcam-container">
     <webcam
-      [trigger]="triggerObservable"
-      (imageCapture)="handleImage($event)"
+      [trigger]="triggerCapture$"
+      (imageCapture)="handleImageCapture($event)"
       (initError)="handleInitError($event)"
+      screenshotFormat="image/png"
+      class="webcam"
     ></webcam>
-    <button (click)="triggerSnapshot()" class="capture-btn">
-      Capture Photo
+    <button (click)="captureImage()" class="capture-button">
+      Capture Webcam Image
     </button>
   </div>
-
-  <!-- Display captured image for review -->
-  <img
-    *ngIf="webcamImage"
-    [src]="webcamImage?.imageAsDataUrl"
-    alt="Captured Image"
-    class="captured-image"
-  />
 </div>
+
+<!-- <div class="ocr-form-container">
+  <h2>OCR Reader</h2>
+
+
+  <div class="file-upload">
+    <p>Select Your Image Here</p>
+    <input type="file" (change)="onFileSelectedJimp($event)" accept="image/*" />
+  </div>
+
+
+  <div *ngIf="ocrResult" class="ocr-result">{{ ocrResult }}</div>
+
+
+  <div *ngIf="isProcessing" class="progress-bar">
+    <div class="progress" [style.width.%]="progress"></div>
+  </div>
+
+
+  <div *ngIf="isImageOpenedInCropper" class="image-cropper-container">
+    <image-cropper
+      [imageChangedEvent]="imageChangedEvent"
+      [imageBase64]="capturedImageDataUrl"
+      [maintainAspectRatio]="false"
+      [aspectRatio]="16 / 9"
+      format="png"
+      (imageCropped)="imageCropped($event)"
+      (imageLoaded)="imageLoaded($event)"
+      (cropperReady)="cropperReady()"
+      (loadImageFailed)="loadImageFailed()"
+    ></image-cropper>
+    <button (click)="cropImage()" class="crop-button">Crop Image</button>
+  </div>
+
+
+  <div *ngIf="croppedImage" class="cropped-image-container">
+    <h3>Cropped Image:</h3>
+    <img [src]="croppedImage" alt="Cropped Image" class="cropped-image" />
+  </div>
+
+  <p>To Get Image form Camera, use below button</p>
+
+  <button *ngIf="isMobile" (click)="toggleWebcam()" class="toggle-webcam-btn">
+    {{ showWebcam ? "Use Camera" : "Close Camera" }}
+  </button>
+
+  <div *ngIf="!showWebcam" class="webcam-container">
+    <webcam
+      [trigger]="triggerCapture$"
+      (imageCapture)="handleImageCapture($event)"
+      (initError)="handleInitError($event)"
+      screenshotFormat="image/png"
+    ></webcam>
+    <button (click)="captureImage()" class="capture-button">
+      Capture Webcam Image
+    </button>
+  </div>
+</div> -->

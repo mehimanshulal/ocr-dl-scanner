@@ -1,121 +1,184 @@
-/* OCR Form Container */
+/* Basic Container Styling */
 .ocr-form-container {
-  display: flex; /* Use flexbox for layout */
-  flex-direction: column; /* Stack items vertically */
-  align-items: center; /* Center items horizontally */
-  text-align: center; /* Center text */
-  margin-top: 50px; /* Space above the container */
-  max-width: 600px; /* Limit the width for larger screens */
-  margin: 0 auto; /* Center the container */
-  padding: 20px; /* Add padding for spacing */
-  border: 1px solid #ccc; /* Light border for definition */
-  border-radius: 8px; /* Rounded corners */
-  background-color: #f9f9f9; /* Light background color */
-  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1); /* Subtle shadow */
+  max-width: 600px;
+  margin: 50px auto;
+  padding: 30px;
+  font-family: Arial, sans-serif;
+  background-color: #f7f9fc;
+  border-radius: 10px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
 }
 
-/* Heading */
-.ocr-form-container h2 {
-  color: #333; /* Darker text color */
+.title {
+  text-align: center;
+  margin-bottom: 30px;
+  font-size: 2em;
+  color: #333;
 }
 
-/* File Upload */
+/* Custom File Upload Button */
 .file-upload {
-  margin: 20px 0; /* Space around the file upload */
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-bottom: 30px;
 }
 
-.file-upload input[type="file"] {
-  padding: 10px; /* Padding for the file input */
-  border: 1px solid #007bff; /* Blue border */
-  border-radius: 4px; /* Rounded corners */
-  cursor: pointer; /* Pointer cursor on hover */
-  margin-bottom: 15px; /* Space below the input */
+.file-upload p {
+  font-size: 1em;
+  color: #555;
+  margin-bottom: 10px;
 }
 
-/* Progress Bar */
+.custom-file-upload {
+  display: inline-block;
+  padding: 10px 20px;
+  font-size: 1em;
+  color: #fff;
+  background-color: #007bff;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+.custom-file-upload:hover {
+  background-color: #0056b3;
+}
+
+.custom-file-upload input[type="file"] {
+  display: none;
+}
+
+/* OCR Result Section */
+.ocr-result {
+  background: #eef2f5;
+  padding: 20px;
+  border-radius: 5px;
+  text-align: center;
+  margin-bottom: 30px;
+  font-size: 1em;
+  color: #333;
+}
+
+/* Progress Bar Styling */
+.progress-bar-container {
+  width: 100%;
+  background-color: #e0e0e0;
+  border-radius: 5px;
+  overflow: hidden;
+  margin-bottom: 30px;
+}
+
 .progress-bar {
-  width: 100%; /* Full width */
-  background-color: #e0e0e0; /* Light gray background */
-  border-radius: 4px; /* Rounded corners */
-  overflow: hidden; /* Hide overflow */
-  margin: 20px 0; /* Space around the progress bar */
+  height: 10px;
 }
 
 .progress {
-  height: 20px; /* Height of the progress */
-  background-color: #007bff; /* Blue color for progress */
-  transition: width 0.3s ease; /* Smooth transition */
+  height: 100%;
+  background-color: #4caf50;
+  transition: width 0.3s ease;
 }
 
-/* OCR Result */
-.ocr-result {
-  margin-top: 20px; /* Space above the result */
-  background-color: #f3f3f3; /* Light gray background */
-  padding: 15px; /* Padding for the result box */
-  border-radius: 8px; /* Rounded corners */
-  width: 80%; /* Responsive width */
-  max-width: 600px; /* Limit max width */
-  color: #333; /* Dark text color */
+/* Image Cropper Section */
+.image-cropper-container {
+  text-align: center;
+  margin-bottom: 30px;
 }
 
-/* Toggle Webcam Button */
-.toggle-webcam-btn {
-  display: block; /* Block display for full width */
-  margin: 20px auto; /* Center the button */
-  padding: 10px 20px; /* Padding for the button */
-  background-color: #007bff; /* Blue background */
-  color: white; /* White text */
-  border: none; /* No border */
-  border-radius: 4px; /* Rounded corners */
-  cursor: pointer; /* Pointer cursor on hover */
-  transition: background-color 0.3s; /* Smooth transition */
+.crop-button {
+  margin-top: 10px;
+  padding: 10px 20px;
+  background-color: #28a745;
+  /* background-color: #931c1c; */
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s;
 }
 
-.toggle-webcam-btn:hover {
-  background-color: #0056b3; /* Darker blue on hover */
+.crop-button:hover {
+  background-color: #218838;
+}
+
+/* Display Cropped Image */
+.cropped-image-container {
+  text-align: center;
+  margin-bottom: 30px;
+  padding: 15px;
+  background: #eef2f5;
+  border-radius: 5px;
+}
+
+.cropped-image {
+  max-width: 100%;
+  height: auto;
+  border-radius: 5px;
+  margin-top: 10px;
+}
+
+/* Webcam Toggle Section */
+.instruction {
+  text-align: center;
+  margin-bottom: 15px;
+  color: #555;
+}
+
+.toggle-webcam-btn,
+.capture-button {
+  display: block;
+  margin: 0 auto;
+  padding: 10px 20px;
+  background-color: #007bff;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  margin-bottom: 30px;
+  transition: background-color 0.3s;
+}
+
+.toggle-webcam-btn:hover,
+.capture-button:hover {
+  background-color: #0056b3;
 }
 
 /* Webcam Container */
 .webcam-container {
-  text-align: center; /* Center the webcam display */
-  margin: 20px 0; /* Space around the webcam */
+  text-align: center;
+  margin-bottom: 30px;
 }
 
-/* Capture Button */
-.capture-btn {
-  margin-top: 10px; /* Space above the button */
-  padding: 10px 20px; /* Padding for the button */
-  background-color: #28a745; /* Green background */
-  color: white; /* White text */
-  border: none; /* No border */
-  border-radius: 4px; /* Rounded corners */
-  cursor: pointer; /* Pointer cursor on hover */
-  transition: background-color 0.3s; /* Smooth transition */
-}
-
-.capture-btn:hover {
-  background-color: #218838; /* Darker green on hover */
-}
-
-/* Captured Image */
-.captured-image {
-  max-width: 100%; /* Responsive image */
-  height: auto; /* Maintain aspect ratio */
-  margin-top: 20px; /* Space above the image */
+.webcam {
+  width: 100%;
+  max-width: 320px;
+  height: auto;
+  border: 2px solid #ddd;
+  border-radius: 5px;
+  margin-bottom: 10px;
 }
 
 /* Responsive Styles */
 @media (max-width: 768px) {
   .ocr-form-container {
-    padding: 15px; /* Reduce padding on smaller screens */
+    padding: 20px;
   }
 
+  .title {
+    font-size: 1.5em;
+  }
+
+  .custom-file-upload,
+  .crop-button,
   .toggle-webcam-btn,
-  .capture-btn {
-    width: 100%; /* Full width buttons on small screens */
+  .capture-button {
+    font-size: 0.9em;
+    padding: 8px 16px;
   }
 
-  .ocr-result {
-    width: 100%; /* Full width for result on small screens */
+  .file-upload p,
+  .instruction,
+  .ocr-result p {
+    font-size: 0.9em;
   }
 }

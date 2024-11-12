@@ -1,73 +1,79 @@
 {
-  "hash": "fda21b94",
-  "configHash": "167b93e5",
+  "hash": "f2c62941",
+  "configHash": "6d15c3ce",
   "lockfileHash": "99866728",
-  "browserHash": "6e2de7f5",
+  "browserHash": "7d5510b7",
   "optimized": {
     "@angular/common": {
       "src": "../../../../../../node_modules/@angular/common/fesm2022/common.mjs",
       "file": "@angular_common.js",
-      "fileHash": "9e819e28",
+      "fileHash": "0e0680c6",
       "needsInterop": false
     },
     "@angular/core": {
       "src": "../../../../../../node_modules/@angular/core/fesm2022/core.mjs",
       "file": "@angular_core.js",
-      "fileHash": "5f68d4ab",
+      "fileHash": "f59f242d",
       "needsInterop": false
     },
     "@angular/platform-browser": {
       "src": "../../../../../../node_modules/@angular/platform-browser/fesm2022/platform-browser.mjs",
       "file": "@angular_platform-browser.js",
-      "fileHash": "de08d213",
+      "fileHash": "8b1941d5",
       "needsInterop": false
     },
     "@angular/platform-server": {
       "src": "../../../../../../node_modules/@angular/platform-server/fesm2022/platform-server.mjs",
       "file": "@angular_platform-server.js",
-      "fileHash": "ff8779dc",
+      "fileHash": "c64768d3",
       "needsInterop": false
     },
     "@angular/router": {
       "src": "../../../../../../node_modules/@angular/router/fesm2022/router.mjs",
       "file": "@angular_router.js",
-      "fileHash": "f19afdec",
+      "fileHash": "e3537fa5",
       "needsInterop": false
     },
     "@sentry/angular": {
       "src": "../../../../../../node_modules/@sentry/angular/fesm2015/sentry-angular.mjs",
       "file": "@sentry_angular.js",
-      "fileHash": "dca305e8",
+      "fileHash": "0b44883d",
       "needsInterop": false
     },
     "@zxing/library": {
       "src": "../../../../../../node_modules/@zxing/library/esm/index.js",
       "file": "@zxing_library.js",
-      "fileHash": "daa18798",
+      "fileHash": "50adf9b5",
       "needsInterop": false
     },
     "jimp": {
       "src": "../../../../../../node_modules/jimp/dist/esm/index.js",
       "file": "jimp.js",
-      "fileHash": "af425411",
+      "fileHash": "12815685",
       "needsInterop": false
     },
     "logrocket": {
       "src": "../../../../../../node_modules/logrocket/dist/build.umd.js",
       "file": "logrocket.js",
-      "fileHash": "95099d83",
+      "fileHash": "8a0ed55d",
       "needsInterop": true
+    },
+    "ngx-image-cropper": {
+      "src": "../../../../../../node_modules/ngx-image-cropper/fesm2022/ngx-image-cropper.mjs",
+      "file": "ngx-image-cropper.js",
+      "fileHash": "ae3ce89b",
+      "needsInterop": false
     },
     "ngx-webcam": {
       "src": "../../../../../../node_modules/ngx-webcam/fesm2015/ngx-webcam.mjs",
       "file": "ngx-webcam.js",
-      "fileHash": "b3da7ff0",
+      "fileHash": "0a7ef980",
       "needsInterop": false
     },
     "rxjs": {
       "src": "../../../../../../node_modules/rxjs/dist/cjs/index.js",
       "file": "rxjs.js",
-      "fileHash": "f27756fc",
+      "fileHash": "c1137eff",
       "needsInterop": true
     }
   },
